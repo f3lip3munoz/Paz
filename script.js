@@ -234,6 +234,12 @@ Object.entries(photoManifest).forEach(([category, files]) => {
   const cover = document.createElement("div");
   cover.className = "gallery-cover";
 
+  const tab = document.createElement("div");
+  tab.className = "folder-tab";
+
+  const body = document.createElement("div");
+  body.className = "folder-body";
+
   const img = document.createElement("img");
   img.src = `images/${category}/${files[0]}`;
   img.alt = `Recuerdos de ${category}`;
@@ -243,8 +249,10 @@ Object.entries(photoManifest).forEach(([category, files]) => {
   badge.className = "gallery-badge";
   badge.textContent = `${files.length} fotos`;
 
-  cover.appendChild(img);
-  cover.appendChild(badge);
+  body.appendChild(img);
+  body.appendChild(badge);
+  cover.appendChild(tab);
+  cover.appendChild(body);
   cover.addEventListener("click", () => openLightbox(category, 0));
   gallery.appendChild(cover);
 });

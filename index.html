@@ -54,7 +54,27 @@
 
     <section class="letter-link">
       <a href="carta.html" class="letter-seal-button" aria-label="Abrir mi carta para ti">
-        <img src="images/ui/carta-sello.png" alt="Abrir mi carta para ti">
+        <svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="envelope-paper" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f6e9c8"/>
+              <stop offset="100%" stop-color="#e2cd97"/>
+            </linearGradient>
+            <radialGradient id="wax-gradient" cx="35%" cy="30%" r="75%">
+              <stop offset="0%" stop-color="#ffe9a8"/>
+              <stop offset="55%" stop-color="#d4af37"/>
+              <stop offset="100%" stop-color="#8a6a10"/>
+            </radialGradient>
+          </defs>
+
+          <rect x="6" y="14" width="208" height="128" rx="8" fill="url(#envelope-paper)" stroke="#9c7a2e" stroke-width="3"/>
+          <path d="M10 20 L110 92 L210 20" fill="none" stroke="#9c7a2e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M10 138 L82 82" fill="none" stroke="#c7a95c" stroke-width="2" stroke-linecap="round"/>
+          <path d="M210 138 L138 82" fill="none" stroke="#c7a95c" stroke-width="2" stroke-linecap="round"/>
+
+          <circle cx="110" cy="88" r="26" fill="url(#wax-gradient)" stroke="#7a5a13" stroke-width="2"/>
+          <text x="110" y="98" text-anchor="middle" font-size="26">&#128081;</text>
+        </svg>
       </a>
     </section>
   </main>
