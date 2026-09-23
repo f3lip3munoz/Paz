@@ -4,31 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paz & Felipe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+  <canvas id="stars-bg"></canvas>
+  <div id="petals"></div>
+
   <header class="hero">
-    <p class="eyebrow">desde el 25 de abril de 2026, 2:00 PM</p>
-    <h1>Paz <span class="heart">&#10084;</span> Felipe</h1>
+    <p class="eyebrow">&#10022; desde el 25 de abril de 2026, 2:00 PM &#10022;</p>
+    <h1>Paz <button id="heart-btn" class="heart" aria-label="Presiona el corazon">&#10084;</button> Felipe</h1>
+
     <div id="counter" class="counter" aria-live="polite">
-      <div class="unit"><span id="days">0</span><small>días</small></div>
-      <div class="unit"><span id="hours">0</span><small>horas</small></div>
-      <div class="unit"><span id="minutes">0</span><small>min</small></div>
-      <div class="unit"><span id="seconds">0</span><small>seg</small></div>
+      <div class="unit"><span id="days">0000</span><small>días</small></div>
+      <div class="unit"><span id="hours">00</span><small>horas</small></div>
+      <div class="unit"><span id="minutes">00</span><small>min</small></div>
+      <div class="unit"><span id="seconds">00</span><small>seg</small></div>
     </div>
     <p class="subtitle">y contando...</p>
+
+    <button id="surprise-btn" class="surprise-btn">&#9733; mensaje sorpresa &#9733;</button>
+    <p id="surprise-message" class="surprise-message"></p>
   </header>
 
   <main>
     <section class="memories">
       <h2>Recuerdos</h2>
+      <p class="hint">(toca una tarjeta para darla vuelta)</p>
 
       <div class="category">
         <h3>✈️ Viajes</h3>
         <div class="gallery" id="gallery-viajes">
-          <div class="photo-placeholder">
-            <span>Foto pendiente</span>
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front"><span>Foto pendiente</span></div>
+              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -36,8 +50,11 @@
       <div class="category">
         <h3>💛 Momentos</h3>
         <div class="gallery" id="gallery-momentos">
-          <div class="photo-placeholder">
-            <span>Foto pendiente</span>
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front"><span>Foto pendiente</span></div>
+              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -45,15 +62,18 @@
       <div class="category">
         <h3>😂 Comedia</h3>
         <div class="gallery" id="gallery-comedia">
-          <div class="photo-placeholder">
-            <span>Foto pendiente</span>
+          <div class="flip-card">
+            <div class="flip-inner">
+              <div class="flip-front"><span>Foto pendiente</span></div>
+              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <section class="letter-link">
-      <a href="carta.html" class="letter-button">Abrir mi carta para ti &#8594;</a>
+      <a href="carta.html" class="letter-button">&#9829; Abrir mi carta para ti &#8594;</a>
     </section>
   </main>
 
