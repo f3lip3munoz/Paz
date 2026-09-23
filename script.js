@@ -173,11 +173,27 @@ const photoManifest = {
 const lightbox = document.getElementById("lightbox");
 const lightboxImg = document.getElementById("lightbox-img");
 const lightboxClose = document.getElementById("lightbox-close");
+const lightboxPrev = document.getElementById("lightbox-prev");
+const lightboxNext = document.getElementById("lightbox-next");
+const lightboxCounter = document.getElementById("lightbox-counter");
 
-function openLightbox(src, alt) {
+let currentCategory = null;
+let currentIndex = 0;
+
+function renderLightboxPhoto() {
+  if (!currentCategory) return;
+  const files = photoManifest[currentCategory];
+  const file = files[currentIndex];
+  lightboxImg.src = `images/${currentCategory}/${file}`;
+  lightboxImg.alt = `Recuerdo de ${currentCategory}`;
+  if (lightboxCounter) lightboxCounter.textContent = `${currentIndex + 1} / ${files.length}`;
+}
+
+function openLightbox(category, index) {
   if (!lightbox || !lightboxImg) return;
-  lightboxImg.src = src;
-  lightboxImg.alt = alt;
+  currentCategory = category;
+  currentIndex = index;
+  renderLightboxPhoto();
   lightbox.classList.add("open");
   lightbox.setAttribute("aria-hidden", "false");
 }
@@ -186,34 +202,49 @@ function closeLightbox() {
   if (!lightbox) return;
   lightbox.classList.remove("open");
   lightbox.setAttribute("aria-hidden", "true");
+  currentCategory = null;
+}
+
+function stepLightbox(delta) {
+  if (!currentCategory) return;
+  const files = photoManifest[currentCategory];
+  currentIndex = (currentIndex + delta + files.length) % files.length;
+  renderLightboxPhoto();
 }
 
 if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+if (lightboxPrev) lightboxPrev.addEventListener("click", () => stepLightbox(-1));
+if (lightboxNext) lightboxNext.addEventListener("click", () => stepLightbox(1));
 if (lightbox) {
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();
   });
 }
 document.addEventListener("keydown", (e) => {
+  if (!lightbox || !lightbox.classList.contains("open")) return;
   if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") stepLightbox(-1);
+  if (e.key === "ArrowRight") stepLightbox(1);
 });
 
 Object.entries(photoManifest).forEach(([category, files]) => {
   const gallery = document.getElementById(`gallery-${category}`);
-  if (!gallery) return;
+  if (!gallery || files.length === 0) return;
 
-  files.forEach((file) => {
-    const src = `images/${category}/${file}`;
-    const thumb = document.createElement("div");
-    thumb.className = "photo-thumb";
+  const cover = document.createElement("div");
+  cover.className = "gallery-cover";
 
-    const img = document.createElement("img");
-    img.src = src;
-    img.alt = `Recuerdo de ${category}`;
-    img.loading = "lazy";
+  const img = document.createElement("img");
+  img.src = `images/${category}/${files[0]}`;
+  img.alt = `Recuerdos de ${category}`;
+  img.loading = "lazy";
 
-    thumb.appendChild(img);
-    thumb.addEventListener("click", () => openLightbox(src, img.alt));
-    gallery.appendChild(thumb);
-  });
+  const badge = document.createElement("span");
+  badge.className = "gallery-badge";
+  badge.textContent = `${files.length} fotos`;
+
+  cover.appendChild(img);
+  cover.appendChild(badge);
+  cover.addEventListener("click", () => openLightbox(category, 0));
+  gallery.appendChild(cover);
 });

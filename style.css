@@ -244,32 +244,67 @@ main {
 }
 
 .gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 1rem;
+  display: flex;
+  justify-content: center;
 }
 
-/* photo gallery */
-.photo-thumb {
+/* gallery cover (stack of photos) */
+.gallery-cover {
+  position: relative;
+  width: 220px;
+  max-width: 70vw;
   aspect-ratio: 4 / 3;
-  border-radius: 12px;
-  overflow: hidden;
   cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.gallery-cover:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.gallery-cover::before,
+.gallery-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: var(--card-bg);
   border: 2px solid var(--card-border);
-  box-shadow: 0 0 14px rgba(124, 247, 255, 0.15);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 0;
 }
 
-.photo-thumb:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 0 18px rgba(255, 111, 165, 0.4);
+.gallery-cover::before {
+  transform: rotate(-6deg) translate(-6px, 5px);
 }
 
-.gallery img {
+.gallery-cover::after {
+  transform: rotate(5deg) translate(6px, 7px);
+}
+
+.gallery-cover img {
+  position: relative;
+  z-index: 1;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  border-radius: 12px;
+  border: 2px solid var(--card-border);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+}
+
+.gallery-badge {
+  position: absolute;
+  z-index: 2;
+  bottom: 10px;
+  right: 6px;
+  background: rgba(10, 4, 32, 0.8);
+  color: var(--accent-3);
+  border: 1px solid var(--accent-3);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
 }
 
 /* lightbox */
@@ -289,8 +324,8 @@ main {
 }
 
 .lightbox img {
-  max-width: 92vw;
-  max-height: 88vh;
+  max-width: 88vw;
+  max-height: 82vh;
   border-radius: 10px;
   box-shadow: 0 0 40px rgba(255, 111, 165, 0.4);
 }
@@ -310,49 +345,58 @@ main {
   cursor: pointer;
 }
 
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 4, 32, 0.6);
+  border: 2px solid var(--accent-2);
+  color: var(--accent-2);
+  font-size: 1.3rem;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.lightbox-prev {
+  left: 1rem;
+}
+
+.lightbox-next {
+  right: 1rem;
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 1.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--accent-3);
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+}
+
 .letter-link {
   text-align: center;
   margin-top: 3rem;
 }
 
 .letter-seal-button {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 150px;
-  text-decoration: none;
+  display: inline-block;
+  width: 190px;
+  max-width: 60vw;
   transition: transform 0.2s ease;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.5));
 }
 
 .letter-seal-button:hover {
-  transform: translateY(-3px) scale(1.04);
+  transform: translateY(-4px) scale(1.03) rotate(-1deg);
 }
 
-.letter-seal-button .envelope {
-  font-size: 6rem;
-  color: var(--accent-2);
-  filter: drop-shadow(0 0 14px rgba(124, 247, 255, 0.55));
-}
-
-.letter-seal-button .wax-seal {
-  position: absolute;
-  bottom: 4px;
-  right: 18px;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d4af37 55%, #8a6a10 100%);
-  border: 2px solid #7a5a13;
-  box-shadow:
-    0 0 10px rgba(255, 215, 111, 0.7),
-    inset 0 0 6px rgba(0, 0, 0, 0.35);
-  transform: rotate(-10deg);
+.letter-seal-button img {
+  width: 100%;
+  display: block;
 }
 
 footer {
@@ -468,7 +512,7 @@ footer {
 .sparkle {
   position: fixed;
   z-index: 50;
-  pointer-events: none;
+  pointer-events: none !important;
   font-size: 1rem;
   animation: sparkle-fade 0.8s ease-out forwards;
 }
@@ -482,7 +526,7 @@ footer {
 .burst-heart {
   position: fixed;
   z-index: 50;
-  pointer-events: none;
+  pointer-events: none !important;
   font-size: 1.4rem;
   animation: burst-fly 1s ease-out forwards;
 }
