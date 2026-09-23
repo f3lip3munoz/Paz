@@ -249,56 +249,65 @@ main {
   gap: 1rem;
 }
 
-/* flip cards */
-.flip-card {
+/* photo gallery */
+.photo-thumb {
   aspect-ratio: 4 / 3;
-  perspective: 900px;
-  cursor: pointer;
-}
-
-.flip-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
-}
-
-.flip-card.flipped .flip-inner {
-  transform: rotateY(180deg);
-}
-
-.flip-front, .flip-back {
-  position: absolute;
-  inset: 0;
-  backface-visibility: hidden;
   border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 0.8rem;
-  font-size: 0.85rem;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid var(--card-border);
+  box-shadow: 0 0 14px rgba(124, 247, 255, 0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.flip-front {
-  border: 2px dashed var(--accent-2);
-  background: rgba(124, 247, 255, 0.08);
-  color: var(--accent-2);
-}
-
-.flip-back {
-  background: linear-gradient(160deg, var(--accent), #b8305e);
-  color: #fff;
-  transform: rotateY(180deg);
-  box-shadow: 0 0 16px rgba(255, 111, 165, 0.5);
+.photo-thumb:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 0 18px rgba(255, 111, 165, 0.4);
 }
 
 .gallery img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 12px;
+  display: block;
+}
+
+/* lightbox */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(6, 3, 20, 0.92);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox img {
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: 10px;
+  box-shadow: 0 0 40px rgba(255, 111, 165, 0.4);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: none;
+  border: 2px solid var(--accent-2);
+  color: var(--accent-2);
+  font-size: 1.6rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
 .letter-link {
@@ -306,20 +315,44 @@ main {
   margin-top: 3rem;
 }
 
-.letter-button {
-  display: inline-block;
-  background: linear-gradient(90deg, var(--accent), #b8305e);
-  color: #fff;
+.letter-seal-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
   text-decoration: none;
-  padding: 0.9rem 2rem;
-  border-radius: 999px;
-  font-size: 1.05rem;
-  box-shadow: 0 0 20px rgba(255, 111, 165, 0.55);
   transition: transform 0.2s ease;
 }
 
-.letter-button:hover {
-  transform: translateY(-2px) scale(1.03);
+.letter-seal-button:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.letter-seal-button .envelope {
+  font-size: 6rem;
+  color: var(--accent-2);
+  filter: drop-shadow(0 0 14px rgba(124, 247, 255, 0.55));
+}
+
+.letter-seal-button .wax-seal {
+  position: absolute;
+  bottom: 4px;
+  right: 18px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d4af37 55%, #8a6a10 100%);
+  border: 2px solid #7a5a13;
+  box-shadow:
+    0 0 10px rgba(255, 215, 111, 0.7),
+    inset 0 0 6px rgba(0, 0, 0, 0.35);
+  transform: rotate(-10deg);
 }
 
 footer {
@@ -346,35 +379,89 @@ footer {
 }
 
 .letter-paper {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
-  backdrop-filter: blur(6px);
-  border-radius: 16px;
-  padding: 3rem 2.5rem;
-  box-shadow: 0 0 30px rgba(124, 247, 255, 0.2);
+  position: relative;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(150, 110, 40, 0.12), transparent 55%),
+    radial-gradient(ellipse at 85% 80%, rgba(150, 110, 40, 0.15), transparent 55%),
+    linear-gradient(160deg, #f6e9c8 0%, #ecd9a6 55%, #e6cf95 100%);
+  border: 6px double #9c7a2e;
+  border-radius: 6px;
+  padding: 3.5rem 2.5rem 3rem;
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.45),
+    inset 0 0 60px rgba(124, 82, 20, 0.18);
+  color: #4a3316;
+}
+
+.letter-seal {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-6deg);
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  background: radial-gradient(circle at 35% 30%, #ffe9a8, #d4af37 55%, #8a6a10 100%);
+  border: 2px solid #7a5a13;
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.4),
+    inset 0 0 6px rgba(0, 0, 0, 0.35);
 }
 
 .letter-paper h1 {
   text-align: center;
-  margin-top: 0;
-  font-family: 'Press Start 2P', monospace;
-  font-size: 1.3rem;
-  color: var(--accent);
-  text-shadow: 0 0 10px var(--accent);
+  margin-top: 1rem;
+  font-family: 'Cinzel', serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.06em;
+  color: #6b4a12;
+}
+
+.letter-to {
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: #8a6a1e;
+  margin-top: -0.5rem;
+  margin-bottom: 2rem;
 }
 
 .letter-body {
   white-space: pre-line;
-  line-height: 1.8;
-  font-size: 1.05rem;
-  min-height: 200px;
+  line-height: 1.9;
+  font-family: 'EB Garamond', 'Georgia', serif;
+  font-size: 1.2rem;
+  min-height: 160px;
 }
 
 .signature {
   text-align: right;
+  font-family: 'EB Garamond', serif;
   font-style: italic;
+  font-size: 1.15rem;
   margin-top: 2rem;
-  color: var(--accent-2);
+  color: #6b4a12;
+}
+
+.letter-photo {
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.letter-photo img {
+  max-width: 100%;
+  width: 320px;
+  border: 10px solid #fdf8ea;
+  border-bottom-width: 34px;
+  border-radius: 2px;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.45);
+  transform: rotate(-3deg);
 }
 
 /* cursor sparkle trail */

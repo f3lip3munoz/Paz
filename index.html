@@ -34,49 +34,36 @@
   <main>
     <section class="memories">
       <h2>Recuerdos</h2>
-      <p class="hint">(toca una tarjeta para darla vuelta)</p>
+      <p class="hint">(toca una foto para verla en grande)</p>
 
       <div class="category">
         <h3>✈️ Viajes</h3>
-        <div class="gallery" id="gallery-viajes">
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front"><span>Foto pendiente</span></div>
-              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
-            </div>
-          </div>
-        </div>
+        <div class="gallery" id="gallery-viajes"></div>
       </div>
 
       <div class="category">
         <h3>💛 Momentos</h3>
-        <div class="gallery" id="gallery-momentos">
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front"><span>Foto pendiente</span></div>
-              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
-            </div>
-          </div>
-        </div>
+        <div class="gallery" id="gallery-momentos"></div>
       </div>
 
       <div class="category">
         <h3>😂 Comedia</h3>
-        <div class="gallery" id="gallery-comedia">
-          <div class="flip-card">
-            <div class="flip-inner">
-              <div class="flip-front"><span>Foto pendiente</span></div>
-              <div class="flip-back"><span>Recuerdo pendiente ✨</span></div>
-            </div>
-          </div>
-        </div>
+        <div class="gallery" id="gallery-comedia"></div>
       </div>
     </section>
 
     <section class="letter-link">
-      <a href="carta.html" class="letter-button">&#128081; Abrir mi carta para ti &#8594;</a>
+      <a href="carta.html" class="letter-seal-button" aria-label="Abrir mi carta para ti">
+        <span class="envelope">&#9993;</span>
+        <span class="wax-seal">&#128081;</span>
+      </a>
     </section>
   </main>
+
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <button id="lightbox-close" class="lightbox-close" aria-label="Cerrar">&times;</button>
+    <img id="lightbox-img" src="" alt="Recuerdo ampliado">
+  </div>
 
   <footer>
     <p>hecho con &#10084; por Felipe</p>

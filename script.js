@@ -141,9 +141,79 @@ if (surpriseBtn && surpriseMessage) {
   });
 }
 
-/* ---------- tarjetas de recuerdos (flip) ---------- */
-document.querySelectorAll(".flip-card").forEach((card) => {
-  card.addEventListener("click", () => {
-    card.classList.toggle("flipped");
+/* ---------- galerias de fotos ---------- */
+const photoManifest = {
+  viajes: [
+    "20260411_170220.jpg", "20260713_180853.jpg", "20260713_210930.jpg", "20260713_234236.jpg",
+    "20260714_142559.jpg", "20260714_142620.jpg", "20260715_200240.jpg", "20260718_152338.jpg",
+    "20260719_135217.jpg", "20260719_151118.jpg", "20260720_145942.jpg", "20260720_154455.jpg",
+    "20260720_155120.jpg", "20260720_155301.jpg", "20260720_155321.jpg", "20260720_172513.jpg",
+    "20260720_172517.jpg", "20260720_173439.jpg", "20260720_173608.jpg", "20260720_173611.jpg",
+    "20260720_173615.jpg", "20260721_153729.jpg", "IMG-20260411-WA0039.jpg", "IMG-20260518-WA0002.jpg",
+    "IMG-20260719-WA0028.jpg", "IMG-20260719-WA0037.jpg", "IMG-20260719-WA0048.jpg", "IMG-20260719-WA0062.jpg",
+    "IMG-20260719-WA0063.jpg", "IMG-20260719-WA0066.jpg", "IMG_20260718_152705_693.webp", "IMG_20260720_143046_886.webp",
+  ],
+  momentos: [
+    "20260501_153652.jpg", "20260509_145757.jpg", "20260517_185847.jpg", "20260529_180350.jpg",
+    "20260605_210812.jpg", "20260605_210814.jpg", "20260725_112526.jpg", "20260725_112541.jpg",
+    "20260731_151230.jpg", "20260816_162735.jpg", "20260816_170138.jpg", "20260906_202049.jpg",
+    "IMG-20260416-WA0097.jpg", "IMG-20260501-WA0002.jpg", "IMG-20260503-WA0007.jpg", "IMG-20260509-WA0053.jpg",
+    "IMG-20260626-WA0037.jpg", "IMG-20260719-WA0020.jpg", "IMG-20260719-WA0021.jpg", "IMG_20260704_232413_479.jpg",
+    "IMG_20260730_222604_556.jpg", "IMG_20260920_000645_870.jpg", "IMG_20260920_000648_018.jpg", "IMG_20260920_000657_055.jpg",
+  ],
+  comedia: [
+    "20260429_083635.jpg", "20260518_133323.jpg", "20260609_183344.jpg", "20260625_084241.jpg",
+    "20260625_172346.jpg", "20260625_180247.jpg", "20260625_191815.jpg", "20260702_112634.jpg",
+    "20260706_195938.jpg", "20260708_094911.jpg", "20260709_132739.jpg", "20260713_183443.jpg",
+    "20260713_221733.jpg", "20260721_162633.jpg", "20260721_162655.jpg", "20260721_162705.jpg",
+    "616ad5ff95f45a726ebdd98bcaafb2ed_0.jpg", "IMG_20260914_080623_418.jpg",
+  ],
+};
+
+const lightbox = document.getElementById("lightbox");
+const lightboxImg = document.getElementById("lightbox-img");
+const lightboxClose = document.getElementById("lightbox-close");
+
+function openLightbox(src, alt) {
+  if (!lightbox || !lightboxImg) return;
+  lightboxImg.src = src;
+  lightboxImg.alt = alt;
+  lightbox.classList.add("open");
+  lightbox.setAttribute("aria-hidden", "false");
+}
+
+function closeLightbox() {
+  if (!lightbox) return;
+  lightbox.classList.remove("open");
+  lightbox.setAttribute("aria-hidden", "true");
+}
+
+if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+if (lightbox) {
+  lightbox.addEventListener("click", (e) => {
+    if (e.target === lightbox) closeLightbox();
+  });
+}
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeLightbox();
+});
+
+Object.entries(photoManifest).forEach(([category, files]) => {
+  const gallery = document.getElementById(`gallery-${category}`);
+  if (!gallery) return;
+
+  files.forEach((file) => {
+    const src = `images/${category}/${file}`;
+    const thumb = document.createElement("div");
+    thumb.className = "photo-thumb";
+
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = `Recuerdo de ${category}`;
+    img.loading = "lazy";
+
+    thumb.appendChild(img);
+    thumb.addEventListener("click", () => openLightbox(src, img.alt));
+    gallery.appendChild(thumb);
   });
 });
