@@ -63,7 +63,7 @@ if (canvas) {
 /* ---------- flores cayendo ---------- */
 const petalsContainer = document.getElementById("petals");
 if (petalsContainer) {
-  const flowers = ["🌸", "🌺", "🌷", "✨"];
+  const flowers = ["🌸", "🌺", "🌷", "✨", "👑"];
   const petalCount = window.innerWidth < 600 ? 10 : 18;
 
   for (let i = 0; i < petalCount; i++) {
@@ -129,6 +129,9 @@ const messages = [
   "Gracias por elegirme, todos los días 💛",
   "Sigues siendo mi comediante favorita 😂❤️",
   "Cuento las horas literalmente, mira el contador ⬆️",
+  "Para mí siempre serás mi princesa 👑",
+  "Ninguna corona te queda tan bien como tu sonrisa 👑✨",
+  "Eres la princesa de este reino y de mi vida 💗",
 ];
 
 if (surpriseBtn && surpriseMessage) {
