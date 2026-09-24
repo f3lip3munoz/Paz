@@ -1,3 +1,10 @@
+/* ---------- service worker (PWA) ---------- */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+
 /* ---------- contador ---------- */
 const startDate = new Date("2026-04-25T14:00:00");
 
