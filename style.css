@@ -67,6 +67,40 @@ header, main, footer {
   z-index: 2;
 }
 
+/* boton de musica de fondo */
+.music-toggle {
+  position: fixed;
+  bottom: 1.2rem;
+  right: 1.2rem;
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #0a0420;
+  border: 2px solid var(--accent-3);
+  color: var(--accent-3);
+  font-size: 1.3rem;
+  cursor: pointer;
+  box-shadow: 0 0 14px rgba(255, 215, 111, 0.45);
+  transition: transform 0.2s ease;
+}
+
+.music-toggle:hover {
+  transform: scale(1.08);
+}
+
+.music-toggle.playing {
+  animation: note-bounce 1s ease-in-out infinite;
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 0 14px rgba(255, 111, 165, 0.5);
+}
+
+@keyframes note-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
 .hero {
   text-align: center;
   padding: 4rem 1.5rem 2.5rem;

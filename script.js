@@ -1,3 +1,42 @@
+/* ---------- musica de fondo ---------- */
+const bgMusic = document.getElementById("bg-music");
+const musicToggle = document.getElementById("music-toggle");
+const MUSIC_KEY = "paz-felipe-music-on";
+
+function setMusicButtonState(playing) {
+  if (!musicToggle) return;
+  musicToggle.textContent = playing ? "🔊" : "🎵";
+  musicToggle.classList.toggle("playing", playing);
+  musicToggle.setAttribute("aria-label", playing ? "Pausar musica" : "Reproducir musica");
+}
+
+if (bgMusic && musicToggle) {
+  bgMusic.volume = 0.35;
+
+  if (localStorage.getItem(MUSIC_KEY) === "on") {
+    bgMusic
+      .play()
+      .then(() => setMusicButtonState(true))
+      .catch(() => setMusicButtonState(false));
+  }
+
+  musicToggle.addEventListener("click", () => {
+    if (bgMusic.paused) {
+      bgMusic
+        .play()
+        .then(() => {
+          setMusicButtonState(true);
+          localStorage.setItem(MUSIC_KEY, "on");
+        })
+        .catch(() => {});
+    } else {
+      bgMusic.pause();
+      setMusicButtonState(false);
+      localStorage.setItem(MUSIC_KEY, "off");
+    }
+  });
+}
+
 /* ---------- service worker (PWA) ---------- */
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
