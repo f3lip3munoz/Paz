@@ -1,4 +1,4 @@
-const CACHE_NAME = "paz-felipe-v2";
+const CACHE_NAME = "paz-felipe-v3";
 const STATE_CACHE = "paz-felipe-state";
 const APP_SHELL = [
   "./",
@@ -29,22 +29,50 @@ self.addEventListener("activate", (event) => {
   self.clients.claim();
 });
 
+const SHELL_EXTENSIONS = [".html", ".css", ".js", ".json"];
+
+function isAppShellRequest(request, url) {
+  if (request.mode === "navigate") return true;
+  return SHELL_EXTENSIONS.some((ext) => url.pathname.endsWith(ext));
+}
+
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
 
-  event.respondWith(
-    caches.match(event.request).then((cached) => {
-      if (cached) return cached;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin) return;
 
-      return fetch(event.request)
+  if (isAppShellRequest(event.request, url)) {
+    // network-first: siempre intenta traer la version mas nueva del sitio,
+    // y solo usa lo cacheado si no hay conexion
+    event.respondWith(
+      fetch(event.request)
         .then((response) => {
-          if (response.ok && event.request.url.startsWith(self.location.origin)) {
+          if (response.ok) {
             const clone = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
           }
           return response;
         })
-        .catch(() => caches.match("./index.html"));
+        .catch(() =>
+          caches.match(event.request).then((cached) => cached || caches.match("./index.html"))
+        )
+    );
+    return;
+  }
+
+  // cache-first para fotos, iconos, audio y fuentes: rara vez cambian
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      if (cached) return cached;
+
+      return fetch(event.request).then((response) => {
+        if (response.ok) {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, clone));
+        }
+        return response;
+      });
     })
   );
 });
