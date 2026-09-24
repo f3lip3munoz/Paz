@@ -102,13 +102,21 @@ setInterval(updateCounter, 1000);
 const NOTIFY_KEY = "paz-felipe-last-month-notified";
 const notifyBtn = document.getElementById("notify-btn");
 
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+window.OneSignalDeferred.push(function (OneSignal) {
+  window.__oneSignal = OneSignal;
+  updateNotifyButton();
+});
+
 function updateNotifyButton() {
   if (!notifyBtn || !("Notification" in window)) return;
-  if (Notification.permission === "granted") {
-    notifyBtn.textContent = "🔔 Notificaciones activadas";
-    notifyBtn.disabled = true;
-  } else if (Notification.permission === "denied") {
+  const OneSignal = window.__oneSignal;
+
+  if (Notification.permission === "denied") {
     notifyBtn.textContent = "🔕 Notificaciones bloqueadas";
+    notifyBtn.disabled = true;
+  } else if (OneSignal && OneSignal.User.PushSubscription.optedIn) {
+    notifyBtn.textContent = "🔔 Notificaciones activadas";
     notifyBtn.disabled = true;
   } else {
     notifyBtn.textContent = "🔔 Avisarme cada mes cumplido";
@@ -150,7 +158,12 @@ if (notifyBtn) {
       alert("Tu navegador no soporta notificaciones.");
       return;
     }
-    await Notification.requestPermission();
+    const OneSignal = window.__oneSignal;
+    if (OneSignal) {
+      await OneSignal.Notifications.requestPermission();
+    } else {
+      await Notification.requestPermission();
+    }
     updateNotifyButton();
     checkMonthAnniversaryNotification();
   });

@@ -1,4 +1,6 @@
-const CACHE_NAME = "paz-felipe-v3";
+importScripts("https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.sw.js");
+
+const CACHE_NAME = "paz-felipe-v4";
 const STATE_CACHE = "paz-felipe-state";
 const APP_SHELL = [
   "./",

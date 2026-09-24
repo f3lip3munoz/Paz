@@ -1,0 +1,33 @@
+name: Monthly anniversary push
+
+on:
+  schedule:
+    # 12pm Chile puede ser 15:00 o 16:00 UTC segun horario de verano;
+    # el script revisa la hora real de Chile y solo envia una vez.
+    - cron: "0 15 * * *"
+    - cron: "0 16 * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revisar aniversario y enviar notificacion si corresponde
+        env:
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+        run: node .github/scripts/send-monthly-notification.js
+
+      - name: Guardar estado si se envio un aviso
+        run: |
+          if [ -n "$(git status --porcelain .github/state)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .github/state
+            git commit -m "chore: registrar aviso mensual enviado [skip ci]"
+            git push
+          fi
