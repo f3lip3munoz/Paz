@@ -141,6 +141,7 @@ header, main, footer {
   justify-content: center;
   gap: 1rem;
   flex-wrap: wrap;
+  margin-top: 2.2rem;
 }
 
 .unit {
@@ -180,6 +181,88 @@ header, main, footer {
 .subtitle {
   margin-top: 1.5rem;
   font-style: italic;
+  color: var(--accent-2);
+}
+
+/* months-together spinning box */
+.months-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.4rem;
+}
+
+.months-inner {
+  position: relative;
+  z-index: 1;
+  background: #0a0420;
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  overflow: hidden;
+}
+
+.months-inner::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(from 0deg, #ff6fa5, #ffd76f, #7cf7ff, #b388ff, #ff6fa5);
+  animation: spin-colors 5s linear infinite;
+  z-index: -2;
+}
+
+.months-inner::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  background: #0a0420;
+  border-radius: 9px;
+  z-index: -1;
+}
+
+@keyframes spin-colors {
+  to { transform: rotate(360deg); }
+}
+
+.months-inner span {
+  display: block;
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.8rem;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+}
+
+.months-inner small {
+  display: block;
+  text-align: center;
+  margin-top: 0.4rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-3);
+}
+
+/* notify button */
+.notify-btn {
+  margin-top: 1.2rem;
+  font-size: 0.75rem;
+  background: transparent;
+  color: var(--accent-2);
+  border: 2px solid var(--accent-2);
+  padding: 0.6rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.notify-btn:hover {
+  background: var(--accent-2);
+  color: #0a0420;
+}
+
+.notify-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+  background: transparent;
   color: var(--accent-2);
 }
 

@@ -1,12 +1,38 @@
 /* ---------- service worker (PWA) ---------- */
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+  window.addEventListener("load", async () => {
+    try {
+      const reg = await navigator.serviceWorker.register("sw.js");
+      if ("periodicSync" in reg) {
+        try {
+          const status = await navigator.permissions.query({ name: "periodic-background-sync" });
+          if (status.state === "granted") {
+            await reg.periodicSync.register("month-anniversary-check", {
+              minInterval: 12 * 60 * 60 * 1000,
+            });
+          }
+        } catch (e) {
+          /* periodic background sync no disponible en este navegador */
+        }
+      }
+    } catch (e) {
+      /* sin service worker no hay problema, el sitio sigue funcionando normal */
+    }
   });
 }
 
 /* ---------- contador ---------- */
 const startDate = new Date("2026-04-25T14:00:00");
+
+function monthsTogether(start, now) {
+  let months = (now.getFullYear() - start.getFullYear()) * 12 + (now.getMonth() - start.getMonth());
+  const startMinutes = start.getHours() * 60 + start.getMinutes();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes();
+  const reachedAnniversaryPoint =
+    now.getDate() > start.getDate() || (now.getDate() === start.getDate() && nowMinutes >= startMinutes);
+  if (!reachedAnniversaryPoint) months--;
+  return Math.max(0, months);
+}
 
 function updateCounter() {
   const daysEl = document.getElementById("days");
@@ -25,10 +51,77 @@ function updateCounter() {
   document.getElementById("hours").textContent = String(hours).padStart(2, "0");
   document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
   document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+
+  const monthsEl = document.getElementById("months");
+  if (monthsEl) monthsEl.textContent = monthsTogether(startDate, now);
 }
 
 updateCounter();
 setInterval(updateCounter, 1000);
+
+/* ---------- notificacion de mes cumplido ---------- */
+const NOTIFY_KEY = "paz-felipe-last-month-notified";
+const notifyBtn = document.getElementById("notify-btn");
+
+function updateNotifyButton() {
+  if (!notifyBtn || !("Notification" in window)) return;
+  if (Notification.permission === "granted") {
+    notifyBtn.textContent = "🔔 Notificaciones activadas";
+    notifyBtn.disabled = true;
+  } else if (Notification.permission === "denied") {
+    notifyBtn.textContent = "🔕 Notificaciones bloqueadas";
+    notifyBtn.disabled = true;
+  } else {
+    notifyBtn.textContent = "🔔 Avisarme cada mes cumplido";
+    notifyBtn.disabled = false;
+  }
+}
+
+async function checkMonthAnniversaryNotification() {
+  if (!("Notification" in window) || Notification.permission !== "granted") return;
+
+  const now = new Date();
+  if (now.getDate() !== startDate.getDate() || now.getHours() < 12) return;
+
+  const months = monthsTogether(startDate, now);
+  if (months <= 0) return;
+  if (localStorage.getItem(NOTIFY_KEY) === String(months)) return;
+
+  const title = "👑 " + months + (months === 1 ? " mes juntos" : " meses juntos");
+  const options = {
+    body: "Otro mes más contigo, princesa. Entra a ver el contador 💛",
+    icon: "icons/icon-192.png",
+    badge: "icons/icon-192.png",
+  };
+
+  if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+    const reg = await navigator.serviceWorker.ready;
+    reg.showNotification(title, options);
+  } else {
+    new Notification(title, options);
+  }
+
+  localStorage.setItem(NOTIFY_KEY, String(months));
+}
+
+if (notifyBtn) {
+  updateNotifyButton();
+  notifyBtn.addEventListener("click", async () => {
+    if (!("Notification" in window)) {
+      alert("Tu navegador no soporta notificaciones.");
+      return;
+    }
+    await Notification.requestPermission();
+    updateNotifyButton();
+    checkMonthAnniversaryNotification();
+  });
+}
+
+checkMonthAnniversaryNotification();
+setInterval(checkMonthAnniversaryNotification, 15 * 60 * 1000);
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "visible") checkMonthAnniversaryNotification();
+});
 
 /* ---------- fondo de estrellas ---------- */
 const canvas = document.getElementById("stars-bg");
