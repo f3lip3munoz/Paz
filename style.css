@@ -343,6 +343,74 @@ main {
   text-shadow: 0 0 10px rgba(124, 247, 255, 0.6);
 }
 
+/* estadisticas curiosas */
+.stats-section {
+  margin-bottom: 3rem;
+}
+
+.stats-section h2 {
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-3);
+  text-shadow: 0 0 10px rgba(255, 215, 111, 0.6);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.stat-card {
+  background: #0a0420;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 1.2rem 1rem;
+  text-align: center;
+  box-shadow: 0 0 12px rgba(255, 111, 165, 0.35);
+}
+
+.stat-value {
+  display: block;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.4rem;
+  color: var(--accent-3);
+  text-shadow: 0 0 8px rgba(255, 215, 111, 0.6);
+  line-height: 1.3;
+}
+
+.stat-card small {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+.stat-versus {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.versus-side {
+  flex: 1;
+  min-width: 140px;
+}
+
+.versus-tag {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.9rem;
+  color: var(--accent-2);
+  text-shadow: 0 0 8px rgba(124, 247, 255, 0.6);
+}
+
 .hint {
   text-align: center;
   font-size: 0.8rem;
