@@ -1,11 +1,21 @@
 /* ---------- mapa de viajes ---------- */
 const travelPlaces = [
-  // agregar aqui cada lugar: { name: "Ciudad, Pais", lat: 0, lng: 0 }
+  { name: "Viña del Mar", detail: "Av. España 650", lat: -33.0279195, lng: -71.5769004, photos: 2 },
+  { name: "Terminal Sur", detail: "Santiago", lat: -33.4542593, lng: -70.6881311, photos: 1 },
+  { name: "Joaquín Prieto 416", detail: "Bulnes", lat: -36.7404503, lng: -72.3026511, photos: 4 },
+  { name: "Bulnes", detail: "", lat: -36.7422507, lng: -72.2987216, photos: 9 },
+  { name: "Plaza de Armas", detail: "Bulnes", lat: -36.7424212, lng: -72.298399, photos: 1 },
+  { name: "Villa Baviera", detail: "Bulnes", lat: -36.3839317, lng: -71.5907005, photos: 6 },
+  { name: "Vivero Santa Rosa", detail: "Bulnes (ubicación aproximada)", lat: -36.7415, lng: -72.301, photos: 5 },
+  { name: "Parque Mahuida", detail: "Santiago", lat: -33.4572407, lng: -70.5185126, photos: 1 },
 ];
 
 const mapContainer = document.getElementById("travel-map");
 if (mapContainer && window.L) {
-  const map = L.map("travel-map", { scrollWheelZoom: false }).setView([-33.4489, -70.6693], 5);
+  const map = L.map("travel-map", {
+    scrollWheelZoom: false,
+    minZoom: 4,
+  }).setView([-35.5, -71.5], 5);
 
   L.tileLayer(
     "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
@@ -24,9 +34,12 @@ if (mapContainer && window.L) {
   });
 
   travelPlaces.forEach((place) => {
+    const detailLine = place.detail ? `${place.detail}<br>` : "";
     L.marker([place.lat, place.lng], { icon: crownIcon })
       .addTo(map)
-      .bindPopup(`<strong>${place.name}</strong>`);
+      .bindPopup(
+        `<strong>${place.name}</strong><br>${detailLine}${place.photos} foto${place.photos === 1 ? "" : "s"}`
+      );
   });
 
   if (travelPlaces.length > 1) {
