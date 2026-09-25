@@ -360,6 +360,54 @@ main {
   color: var(--text);
 }
 
+/* mapa de viajes */
+.travel-map {
+  margin-top: 1.5rem;
+  height: 320px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--card-border);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  background: #0a0420;
+}
+
+.map-pin {
+  font-size: 1.6rem;
+  line-height: 1;
+  text-align: center;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 111, 0.85));
+}
+
+.travel-map .leaflet-control-zoom a {
+  background: #0a0420;
+  color: var(--accent-3);
+  border-color: var(--card-border) !important;
+}
+
+.travel-map .leaflet-control-zoom a:hover {
+  background: #16123a;
+}
+
+.travel-map .leaflet-control-attribution {
+  background: rgba(10, 4, 32, 0.75);
+  color: var(--text);
+}
+
+.travel-map .leaflet-control-attribution a {
+  color: var(--accent-2);
+}
+
+.travel-map .leaflet-popup-content-wrapper {
+  background: #0a0420;
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+}
+
+.travel-map .leaflet-popup-tip {
+  background: #0a0420;
+}
+
 .gallery {
   display: flex;
   justify-content: center;

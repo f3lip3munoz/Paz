@@ -1,3 +1,42 @@
+/* ---------- mapa de viajes ---------- */
+const travelPlaces = [
+  // agregar aqui cada lugar: { name: "Ciudad, Pais", lat: 0, lng: 0 }
+];
+
+const mapContainer = document.getElementById("travel-map");
+if (mapContainer && window.L) {
+  const map = L.map("travel-map", { scrollWheelZoom: false }).setView([-33.4489, -70.6693], 5);
+
+  L.tileLayer(
+    "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+    {
+      attribution: "Tiles &copy; Esri",
+      maxZoom: 16,
+    }
+  ).addTo(map);
+
+  const crownIcon = L.divIcon({
+    className: "map-pin",
+    html: "👑",
+    iconSize: [28, 28],
+    iconAnchor: [14, 26],
+    popupAnchor: [0, -24],
+  });
+
+  travelPlaces.forEach((place) => {
+    L.marker([place.lat, place.lng], { icon: crownIcon })
+      .addTo(map)
+      .bindPopup(`<strong>${place.name}</strong>`);
+  });
+
+  if (travelPlaces.length > 1) {
+    map.fitBounds(
+      L.latLngBounds(travelPlaces.map((p) => [p.lat, p.lng])),
+      { padding: [30, 30] }
+    );
+  }
+}
+
 /* ---------- musica de fondo ---------- */
 const bgMusic = document.getElementById("bg-music");
 const musicToggle = document.getElementById("music-toggle");
