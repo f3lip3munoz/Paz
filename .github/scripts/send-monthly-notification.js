@@ -73,8 +73,8 @@ async function main() {
       included_segments: ["Subscribed Users"],
       headings: { en: title },
       contents: { en: "Otro mes más contigo, princesa. Entra a ver el contador 💛" },
-      url: "https://f3lip3munoz.github.io/Proyecto25/",
-      chrome_web_icon: "https://f3lip3munoz.github.io/Proyecto25/icons/icon-192.png",
+      url: "https://f3lip3munoz.github.io/Paz/",
+      chrome_web_icon: "https://f3lip3munoz.github.io/Paz/icons/icon-192.png",
     }),
   });
 
