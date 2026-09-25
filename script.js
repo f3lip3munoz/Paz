@@ -1,3 +1,30 @@
+/* ---------- candado de acceso con PIN ---------- */
+const PIN_CODE = "2504";
+const UNLOCK_KEY = "paz-felipe-unlocked";
+const pinLock = document.getElementById("pin-lock");
+const pinInput = document.getElementById("pin-input");
+const pinError = document.getElementById("pin-error");
+
+if (pinLock && pinInput) {
+  pinInput.focus();
+
+  pinInput.addEventListener("input", () => {
+    pinInput.value = pinInput.value.replace(/\D/g, "").slice(0, 4);
+    pinError.textContent = "";
+
+    if (pinInput.value.length === 4) {
+      if (pinInput.value === PIN_CODE) {
+        localStorage.setItem(UNLOCK_KEY, "yes");
+        pinLock.classList.remove("show");
+        document.body.classList.remove("locked-body");
+      } else {
+        pinError.textContent = "PIN incorrecto";
+        pinInput.value = "";
+      }
+    }
+  });
+}
+
 /* ---------- mapa de viajes ---------- */
 const travelPlaces = [
   { name: "Viña del Mar", detail: "Av. España 650", lat: -33.0279195, lng: -71.5769004, photos: 2 },

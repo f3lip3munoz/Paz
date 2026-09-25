@@ -29,6 +29,21 @@
 </head>
 <body>
 
+  <div id="pin-lock" class="pin-lock">
+    <div class="pin-lock-box">
+      <div class="pin-lock-crown">&#128081;</div>
+      <p class="pin-lock-label">Ingresa el PIN</p>
+      <input type="password" id="pin-input" class="pin-input" inputmode="numeric" maxlength="4" autocomplete="off">
+      <p id="pin-error" class="pin-error"></p>
+    </div>
+  </div>
+  <script>
+    if (localStorage.getItem("paz-felipe-unlocked") !== "yes") {
+      document.getElementById("pin-lock").classList.add("show");
+      document.body.classList.add("locked-body");
+    }
+  </script>
+
   <canvas id="stars-bg"></canvas>
   <div id="petals"></div>
 
