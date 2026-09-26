@@ -1,3 +1,49 @@
+/* ---------- fechas importantes ---------- */
+const importantDates = [
+  { label: "Cumpleaños Paz", month: 4, day: 18 },
+  { label: "Cumpleaños Felipe", month: 11, day: 18 },
+  { label: "Primera cita", month: 12, day: 19 },
+];
+
+function daysUntilNext(month, day, from) {
+  const today = new Date(from);
+  today.setHours(0, 0, 0, 0);
+
+  let target = new Date(today.getFullYear(), month - 1, day);
+  target.setHours(0, 0, 0, 0);
+  if (target < today) {
+    target = new Date(today.getFullYear() + 1, month - 1, day);
+  }
+
+  return Math.round((target - today) / (1000 * 60 * 60 * 24));
+}
+
+function updateNextDate() {
+  const daysEl = document.getElementById("next-date-days");
+  const labelEl = document.getElementById("next-date-label");
+  if (!daysEl || !labelEl) return;
+
+  const now = new Date();
+  let nearest = null;
+  importantDates.forEach((d) => {
+    const days = daysUntilNext(d.month, d.day, now);
+    if (!nearest || days < nearest.days) {
+      nearest = { days, label: d.label };
+    }
+  });
+
+  if (nearest.days === 0) {
+    daysEl.textContent = "🎉";
+    labelEl.textContent = `¡Hoy es ${nearest.label}!`;
+  } else {
+    daysEl.textContent = nearest.days;
+    labelEl.textContent = `día${nearest.days === 1 ? "" : "s"} para: ${nearest.label}`;
+  }
+}
+
+updateNextDate();
+setInterval(updateNextDate, 60 * 60 * 1000);
+
 /* ---------- mapa de viajes ---------- */
 const travelPlaces = [
   { name: "Viña del Mar", detail: "Av. España 650", lat: -33.0279195, lng: -71.5769004, photos: 2 },

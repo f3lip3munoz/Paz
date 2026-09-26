@@ -348,6 +348,62 @@ main {
   margin-bottom: 3rem;
 }
 
+/* fechas importantes */
+.dates-section {
+  margin-bottom: 3rem;
+  text-align: center;
+}
+
+.dates-section h2 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-2);
+  text-shadow: 0 0 10px rgba(124, 247, 255, 0.6);
+}
+
+.next-date-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: #0a0420;
+  border: 2px solid var(--accent-3);
+  border-radius: 14px;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 0 16px rgba(255, 215, 111, 0.4);
+  margin-bottom: 1.5rem;
+}
+
+.next-date-badge span {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 2rem;
+  color: var(--accent-3);
+  text-shadow: 0 0 10px rgba(255, 215, 111, 0.6);
+}
+
+.next-date-badge small {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.dates-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text);
+  opacity: 0.85;
+}
+
+.dates-list strong {
+  color: var(--accent-2);
+}
+
 .stats-section h2 {
   text-align: center;
   font-family: 'Press Start 2P', monospace;
