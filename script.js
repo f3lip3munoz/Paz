@@ -1,3 +1,141 @@
+/* ---------- mood compartido ---------- */
+const MOODS = [
+  { emoji: "🥰", label: "Enamorada/o", color: "#ff6fa5" },
+  { emoji: "😊", label: "Feliz", color: "#ffd76f" },
+  { emoji: "😴", label: "Cansada/o", color: "#b388ff" },
+  { emoji: "😢", label: "Triste", color: "#7cf7ff" },
+  { emoji: "😡", label: "Enojada/o", color: "#ff5555" },
+  { emoji: "😐", label: "Neutral", color: "#9a9a9a" },
+];
+
+const IDENTITY_KEY = "paz-felipe-identity";
+
+const moodFirebaseConfig = {
+  apiKey: "AIzaSyD1LBi5RV5LzRtafnZSzOPQ-xyGyDrOnFE",
+  authDomain: "paz-felipe.firebaseapp.com",
+  databaseURL: "https://paz-felipe-default-rtdb.firebaseio.com",
+  projectId: "paz-felipe",
+  storageBucket: "paz-felipe.firebasestorage.app",
+  messagingSenderId: "263316707115",
+  appId: "1:263316707115:web:8a8008764c5b870df8d76e",
+};
+
+const moodWidget = document.getElementById("mood-widget");
+
+if (moodWidget && window.firebase) {
+  firebase.initializeApp(moodFirebaseConfig);
+  const moodDb = firebase.database();
+
+  function renderMood(person, data) {
+    const faceEl = document.getElementById(`mood-face-${person}`);
+    const msgEl = document.getElementById(`mood-message-${person}`);
+    if (!faceEl) return;
+
+    if (data && data.emoji) {
+      faceEl.textContent = data.emoji;
+      faceEl.style.borderColor = data.color || "";
+      faceEl.style.boxShadow = data.color ? `0 0 14px ${data.color}` : "";
+      if (msgEl) msgEl.textContent = data.message || "";
+    } else {
+      faceEl.textContent = "❔";
+      faceEl.style.borderColor = "";
+      faceEl.style.boxShadow = "";
+      if (msgEl) msgEl.textContent = "";
+    }
+  }
+
+  function askIdentity() {
+    return new Promise((resolve) => {
+      const overlay = document.createElement("div");
+      overlay.className = "identity-overlay";
+      overlay.innerHTML =
+        '<div class="identity-box">' +
+        '<div class="identity-crown">👑</div>' +
+        '<p class="identity-label">¿Quién eres?</p>' +
+        '<div class="identity-buttons">' +
+        '<button class="identity-btn" data-who="paz">Soy Paz</button>' +
+        '<button class="identity-btn" data-who="felipe">Soy Felipe</button>' +
+        "</div></div>";
+      document.body.appendChild(overlay);
+
+      overlay.querySelectorAll(".identity-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const who = btn.dataset.who;
+          localStorage.setItem(IDENTITY_KEY, who);
+          overlay.remove();
+          resolve(who);
+        });
+      });
+    });
+  }
+
+  function openMoodPicker(person) {
+    const existing = document.getElementById("mood-picker");
+    if (existing) existing.remove();
+
+    const picker = document.createElement("div");
+    picker.id = "mood-picker";
+    picker.className = "mood-picker";
+
+    const optionsHtml = MOODS.map(
+      (m) =>
+        `<button class="mood-option" data-emoji="${m.emoji}" data-color="${m.color}" title="${m.label}">${m.emoji}</button>`
+    ).join("");
+
+    picker.innerHTML =
+      '<div class="mood-picker-box">' +
+      `<div class="mood-options">${optionsHtml}</div>` +
+      '<input type="text" id="mood-message-input" class="mood-message-input" maxlength="60" placeholder="Mensaje corto (opcional)">' +
+      '<div class="mood-picker-actions">' +
+      '<button id="mood-save-btn" class="mood-save-btn">Guardar</button>' +
+      '<button id="mood-cancel-btn" class="mood-cancel-btn">Cancelar</button>' +
+      "</div></div>";
+
+    document.body.appendChild(picker);
+
+    let selected = null;
+    picker.querySelectorAll(".mood-option").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        picker.querySelectorAll(".mood-option").forEach((b) => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selected = { emoji: btn.dataset.emoji, color: btn.dataset.color };
+      });
+    });
+
+    picker.querySelector("#mood-cancel-btn").addEventListener("click", () => picker.remove());
+    picker.querySelector("#mood-save-btn").addEventListener("click", () => {
+      if (!selected) {
+        picker.remove();
+        return;
+      }
+      const message = picker.querySelector("#mood-message-input").value.trim();
+      moodDb.ref(`moods/${person}`).set({
+        emoji: selected.emoji,
+        color: selected.color,
+        message,
+        updatedAt: Date.now(),
+      });
+      picker.remove();
+    });
+  }
+
+  (async function initMood() {
+    let myIdentity = localStorage.getItem(IDENTITY_KEY);
+    if (!myIdentity) {
+      myIdentity = await askIdentity();
+    }
+
+    moodDb.ref("moods/paz").on("value", (snap) => renderMood("paz", snap.val()));
+    moodDb.ref("moods/felipe").on("value", (snap) => renderMood("felipe", snap.val()));
+
+    const myFace = document.getElementById(`mood-face-${myIdentity}`);
+    if (myFace) {
+      myFace.classList.add("mood-face-editable");
+      myFace.addEventListener("click", () => openMoodPicker(myIdentity));
+    }
+  })();
+}
+
 /* ---------- fechas importantes ---------- */
 const importantDates = [
   { label: "Cumpleaños Paz", month: 4, day: 18 },

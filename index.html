@@ -41,6 +41,19 @@
     <p class="princess-tag">&#128081; mi princesa &#128081;</p>
     <h1><span class="crown">&#128081;</span>Paz <button id="heart-btn" class="heart" aria-label="Presiona el corazon">&#10084;</button> Felipe</h1>
 
+    <div id="mood-widget" class="mood-widget">
+      <div class="mood-person">
+        <span class="mood-name">Paz</span>
+        <button class="mood-face" id="mood-face-paz" aria-label="Mood de Paz">&#10067;</button>
+        <p class="mood-message" id="mood-message-paz"></p>
+      </div>
+      <div class="mood-person">
+        <span class="mood-name">Felipe</span>
+        <button class="mood-face" id="mood-face-felipe" aria-label="Mood de Felipe">&#10067;</button>
+        <p class="mood-message" id="mood-message-felipe"></p>
+      </div>
+    </div>
+
     <div id="counter" class="counter" aria-live="polite">
       <div class="unit"><span id="days">0000</span><small>días</small></div>
       <div class="unit"><span id="hours">00</span><small>horas</small></div>
@@ -170,6 +183,8 @@
     <p>hecho con &#10084; por Felipe</p>
   </footer>
 
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.19.0/firebase-database-compat.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="script.js"></script>
 </body>
